@@ -1,0 +1,18 @@
+server:
+  port: 9003 # 端口
+spring:
+  application:
+    name: eureka-server # 应用名称，会在Eureka中显示
+eureka:
+  instance:
+    hostname: eureka-server-9003
+  client:
+    service-url:
+      defaultZone: http://eureka-server-9001:9001/eureka,http://eureka-server-9002:9002/eureka
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 1000
+spring.freemarker.prefer-file-system-access: false
+
+
+

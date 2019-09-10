@@ -28,26 +28,20 @@ public class UserDao {
     private RestTemplate restTemplate;
 
     public List<User> queryUserByIds(List<Long> ids) {
-        StopWatch stopWatch=new StopWatch();
+        StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         List<User> users = new ArrayList<>();
         List<ServiceInstance> instances = discoveryClient.getInstances("user-service-producer");
-        ServiceInstance instance= instances.size() > 0 ? instances.get(0) : null;
+        ServiceInstance instance = instances.size() > 0 ? instances.get(0) : null;
         if (instance == null) {
             return Collections.emptyList();
         }
         String baseUrl = "http://" + instance.getHost() + ":" + instance.getPort() + "/api/user/";
         ids.forEach(id -> {
-            users.add(restTemplate.getForObject(baseUrl+id, User.class));
-//            // 每次间隔500毫秒
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            users.add(restTemplate.getForObject(baseUrl + id, User.class));
         });
         stopWatch.stop();
-        log.info("query time cost{} ms",stopWatch.getTotalTimeMillis());
+        log.info("query time cost {} ms", stopWatch.getTotalTimeMillis());
         return users;
     }
 }
