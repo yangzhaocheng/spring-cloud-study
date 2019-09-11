@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Repository
 @Slf4j
-public class UserDao {
+public class UserRestClient {
     @Autowired
     private DiscoveryClient discoveryClient;//Eureka客户端，可以获取服务实例
     @Autowired
@@ -34,7 +34,7 @@ public class UserDao {
     }
 
     public User queryUserByIdFallback(Long id) {
-        log.info("invoke query user by id {}", id);
+        log.info("invoke rest client fail,query user by id {}", id);
         User user = new User();
         user.setId(id);
         user.setName("用户信息查询出现异常");

@@ -7,6 +7,7 @@ spring:
     loadbalancer:
       retry:
         enabled: true # 开启Spring Cloud的重试功能
+
 eureka:
   client:
     service-url: # EurekaServer地址
@@ -25,15 +26,31 @@ user-service-producer:
   MaxAutoRetriesNextServer: 3 # 切换实例的重试次数
   MaxAutoRetries: 1 # 对当前实例的重试次数
 
+feign:
+  hystrix:
+    enabled: true
+  compression:
+    request:
+      enabled: true # 开启请求压缩
+      mime-types: text/html,application/xml,application/json # 设置压缩的数据类型
+      min-request-size: 2048 # 设置触发压缩的大小下限
+    response:
+      enabled: true # 开启响应压缩
+
 hystrix:
   command:
     default:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 5000
+            timeoutInMilliseconds: 2000
 
 
 
 
 
+
+
+logging:
+  level:
+    com.opera: debug
