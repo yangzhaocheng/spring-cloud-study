@@ -4,7 +4,7 @@ spring:
   application:
     name: eureka-server # 应用名称，会在Eureka中显示
 eureka:
-  instance:8
+  instance:
     hostname: eureka-server-9001
   client:
     service-url:

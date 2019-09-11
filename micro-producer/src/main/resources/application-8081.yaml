@@ -21,7 +21,7 @@ eureka:
   instance:
     prefer-ip-address: true # 当调用getHostname获取实例的hostname时，返回ip而不是host名称
     ip-address: 127.0.0.1 # 指定自己的ip信息，不指定的话会自己寻找
-    lease-expiration-duration-in-seconds: 10
-    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 60
+    lease-renewal-interval-in-seconds: 30
 
 

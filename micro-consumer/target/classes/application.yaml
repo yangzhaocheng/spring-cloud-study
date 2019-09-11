@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: user-service-consumer
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true # 开启Spring Cloud的重试功能
 eureka:
   client:
     service-url: # EurekaServer地址
@@ -11,3 +15,14 @@ eureka:
   instance:
     prefer-ip-address: true # 当调用getHostname获取实例的hostname时，返回ip而不是host名称
     ip-address: 127.0.0.1 # 指定自己的ip信息，不指定的话会自己寻找
+
+user-service-producer:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule
+  ConnectTimeout: 250 # Ribbon的连接超时时间
+  ReadTimeout: 1000 # Ribbon的数据读取超时时间
+#  OkToRetryOnAllOperations: true # 是否对所有操作都进行重试
+#  MaxAutoRetriesNextServer: 3 # 切换实例的重试次数
+#  MaxAutoRetries: 1 # 对当前实例的重试次数
+
+

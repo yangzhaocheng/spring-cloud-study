@@ -31,12 +31,7 @@ public class UserDao {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         List<User> users = new ArrayList<>();
-        List<ServiceInstance> instances = discoveryClient.getInstances("user-service-producer");
-        ServiceInstance instance = instances.size() > 0 ? instances.get(0) : null;
-        if (instance == null) {
-            return Collections.emptyList();
-        }
-        String baseUrl = "http://" + instance.getHost() + ":" + instance.getPort() + "/api/user/";
+        String baseUrl="http://user-service-producer/api/user/";
         ids.forEach(id -> {
             users.add(restTemplate.getForObject(baseUrl + id, User.class));
         });
