@@ -1,17 +1,12 @@
 package com.opera.micro.consumer.dao.rest;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StopWatch;
 import org.springframework.web.client.RestTemplate;
 
-import com.netflix.appinfo.InstanceInfo;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.opera.micro.consumer.model.User;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,16 +22,22 @@ public class UserDao {
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<User> queryUserByIds(List<Long> ids) {
+    @HystrixCommand(fallbackMethod = "queryUserByIdFallback")
+    public User queryUserById(Long id) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        List<User> users = new ArrayList<>();
-        String baseUrl="http://user-service-producer/api/user/";
-        ids.forEach(id -> {
-            users.add(restTemplate.getForObject(baseUrl + id, User.class));
-        });
+        String baseUrl = "http://user-service-producer/api/user/";
+        User user = restTemplate.getForObject(baseUrl + id, User.class);
         stopWatch.stop();
-        log.info("query time cost {} ms", stopWatch.getTotalTimeMillis());
-        return users;
+        log.info("query id {} cost time {} ms", id, stopWatch.getTotalTimeMillis());
+        return user;
+    }
+
+    public User queryUserByIdFallback(Long id) {
+        log.info("invoke query user by id {}", id);
+        User user = new User();
+        user.setId(id);
+        user.setName("用户信息查询出现异常");
+        return user;
     }
 }

@@ -1,5 +1,7 @@
 package com.opera.micro.producer.controller;
 
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +28,14 @@ public class UserController {
     public User queryById(@PathVariable("id") Long id) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
+        try {
+            Thread.sleep(new Random().nextInt(4000));
+        } catch (InterruptedException e) {
+            log.info("cast exception {}", e.getMessage());
+        }
         User user = userService.queryById(id);
         stopWatch.stop();
-        log.info("invoke user service cost {} ms", stopWatch.getTotalTimeMillis());
+        log.info("invoke user service query {} id user cost {} ms", id, stopWatch.getTotalTimeMillis());
         return user;
     }
 

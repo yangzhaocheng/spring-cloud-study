@@ -25,4 +25,15 @@ user-service-producer:
   MaxAutoRetriesNextServer: 3 # 切换实例的重试次数
   MaxAutoRetries: 1 # 对当前实例的重试次数
 
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+
+
+
+
 
